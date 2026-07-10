@@ -1,0 +1,21 @@
+{% macro card(post) %}
+<a class="card" href="{{ post.url }}">
+  {% if post.data.cover %}
+  <div class="card__media">
+    <img src="{{ post.data.cover }}" alt="{{ post.data.coverAlt or post.data.title }}" loading="lazy">
+  </div>
+  {% else %}
+  <div class="card__media card__media--empty" aria-hidden="true">no cover yet</div>
+  {% endif %}
+  <div class="card__body">
+    <div class="card__meta">
+      <span class="tag">{{ post.data.medium or post.data.type }}</span>
+      <span>·</span>
+      <time datetime="{{ post.date.toISOString() }}">{{ post.date | cardDate }}</time>
+    </div>
+    <h3 class="card__title">{{ post.data.title }}</h3>
+    {% if post.data.excerpt %}<p class="card__excerpt">{{ post.data.excerpt }}</p>{% endif %}
+    {% if post.data.score %}<span class="card__score">{{ post.data.score }}</span>{% endif %}
+  </div>
+</a>
+{% endmacro %}

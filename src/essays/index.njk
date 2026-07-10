@@ -1,0 +1,20 @@
+---
+layout: base.njk
+title: All Essays
+eleventyExcludeFromCollections: true
+permalink: /essays/
+---
+{% from "card.njk" import card %}
+
+<section class="section container archive">
+  <header class="archive-head">
+    <span class="kicker">Archive</span>
+    <h1>Essays & Articles</h1>
+    <p class="archive-count">{{ collections.essaysLatest | length }} published</p>
+  </header>
+  <div class="card-grid">
+    {% for post in collections.essaysLatest %}
+      {{ card(post) }}
+    {% endfor %}
+  </div>
+</section>

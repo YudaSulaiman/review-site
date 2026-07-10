@@ -1,0 +1,52 @@
+---
+layout: base.njk
+eleventyExcludeFromCollections: true
+---
+{% from "card.njk" import card %}
+
+{% set featuredPost = collections.featured | last %}
+{% if featuredPost %}
+<section class="featured container" aria-label="Featured article">
+  <a class="featured__card" href="{{ featuredPost.url }}">
+    <div class="featured__media">
+      <img src="{{ featuredPost.data.heroImage or featuredPost.data.cover }}" alt="{{ featuredPost.data.coverAlt or featuredPost.data.title }}" loading="eager">
+    </div>
+    <div class="featured__body">
+      <span class="kicker">Featured {{ featuredPost.data.type }} · {{ featuredPost.data.medium }}</span>
+      <h2 class="featured__title">{{ featuredPost.data.title }}{% if featuredPost.data.subtitle %} — {{ featuredPost.data.subtitle }}{% endif %}</h2>
+      {% if featuredPost.data.excerpt %}<p class="featured__excerpt">{{ featuredPost.data.excerpt }}</p>{% endif %}
+    </div>
+  </a>
+</section>
+{% endif %}
+
+<section class="section container" aria-labelledby="reviews-heading">
+  <div class="section-head">
+    <h2 id="reviews-heading">Latest Reviews</h2>
+    <a href="/reviews/">All reviews →</a>
+  </div>
+  <div class="card-grid">
+    {% for post in collections.reviewsLatest | limit(6) %}
+      {{ card(post) }}
+    {% endfor %}
+  </div>
+</section>
+
+<div class="about-strip">
+  <div class="about-strip__inner">
+    <span class="kicker">About this journal</span>
+    <p>“One writer, three mediums. Long-form reviews and essays on the games, visual novels, and films worth sitting with — no scores without reasons.”</p>
+  </div>
+</div>
+
+<section class="section container" aria-labelledby="essays-heading">
+  <div class="section-head">
+    <h2 id="essays-heading">Essays & Articles</h2>
+    <a href="/essays/">All essays →</a>
+  </div>
+  <div class="card-grid">
+    {% for post in collections.essaysLatest | limit(6) %}
+      {{ card(post) }}
+    {% endfor %}
+  </div>
+</section>

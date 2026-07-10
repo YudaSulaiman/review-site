@@ -1,0 +1,28 @@
+---
+layout: base.njk
+---
+<header class="article-hero">
+  <span class="kicker">{{ type }}{% if medium %} · {{ medium }}{% endif %}</span>
+  <h1>{{ title }}</h1>
+  {% if page.date %}
+  <p class="byline">{% if author %}By {{ author }} · {% endif %}<time datetime="{{ page.date.toISOString() }}">{{ page.date | bylineDate }}</time></p>
+  {% endif %}
+</header>
+
+{% if cover %}
+<figure class="article-cover">
+  <img src="{{ cover }}" alt="{{ coverAlt or title }}">
+</figure>
+{% endif %}
+
+<article class="prose">
+{{ content | safe }}
+
+{% if score %}
+<aside class="verdict" aria-label="Verdict">
+  <span class="kicker">Verdict</span>
+  <div class="verdict__score">{{ score }}</div>
+  {% if verdict %}<p>{{ verdict }}</p>{% endif %}
+</aside>
+{% endif %}
+</article>
