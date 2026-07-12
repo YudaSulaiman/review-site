@@ -190,11 +190,36 @@ content and does not belong in the review-site repo):
 Everything above applies; adjust only these:
 
 - **Front matter**: `medium: Visual Novel`.
-- **Hero/cover meta line**: replace `Hours played` with what fits the work —
-  `Length: ~30h` and/or `Routes: 5 + true end`. Keep the same label/value ◆ format:
-  `Developer / Publisher: … ◆ Platform(s): … ◆ Release year: … ◆ Length: …`.
+- **Hero/cover meta**: VNs do NOT use the game meta line. Games keep the single
+  ◆-separated line from §5:
+
+  > **Developer / Publisher:** Sandfall Team ◆ **Platform(s):** PC/PS5 ◆
+  > **Release year:** 2025 ◆ **Hours played:** ~70h
+
+  VNs instead get a **stacked stat block** (VNDB-style label/value rows, one per line) in
+  the hero or directly beneath it:
+
+  > **Title:** アンラベル・トリガー · Unravel trigger *(original + romanized/localized,
+  > stacked if long)*
+  > **Aliases:** アントリ, Antori
+  > **Developer / Publisher:** Archive
+  > **Release year:** 2024
+  > **Language(s):** 🇯🇵 *(flag(s) of available languages; add 🇬🇧 etc. when localized)*
+  > **Playtime:** Long (30–50h) *(VNDB length category + hour range)*
+  > **Age Ratings:** 18+
+
+  Omit a row only when it's genuinely N/A (e.g. no aliases). `Hours played` (the user's
+  own count) may be added as a final row when they provide it — never in place of
+  `Playtime`.
+- **Primary metadata source: [vndb.org](https://vndb.org)** — browse it first when
+  starting any VN review. It is the authority for the stat block above (original/romanized
+  titles, aliases, staff/developer, release dates, length category, language releases, age
+  rating) and for discovering official sites, store links, and screenshots. Cross-check
+  the developer's official site for anything marketing-sensitive.
 - **Image sourcing**: official site galleries, store pages (Steam/JAST/MangaGamer/DLsite),
-  and press kits. Prefer key art, sprites-on-background shots, and UI/screenshot stills.
+  press kits, and vndb screenshot listings (use them to *find* official images; prefer
+  safe-tagged shots and re-source from the official/store page at full quality when
+  possible). Prefer key art, sprites-on-background shots, and UI/screenshot stills.
   **CG rules**: only CGs the marketing itself uses; never late-route or ending CGs — treat
   CG choice as a spoiler decision, matching each image to the passage exactly as §3 demands.
   Expect placeholders more often for niche VNs; that's what the §3 placeholder drill is for.
