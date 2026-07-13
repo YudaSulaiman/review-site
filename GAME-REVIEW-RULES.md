@@ -20,36 +20,39 @@ adaptations are in §10. The web page is an article of the Parallel Frame site
 
 ## 1. Directory layout — never mix deliverables
 
-**Web version** is a Parallel Frame article and lives inside `review-site/`:
+Each reviewed title gets ONE **series directory** at `review-site/drafts/<slug>/` (tracked
+in git — drafts are committed) holding both deliverables as siblings:
 
 ```
-review-site/drafts/<slug>/       # drafting session writes HERE (gitignored)
-  index.html                     # art-directed page, front matter on top (see below)
+review-site/drafts/<slug>/       # series directory — drafting session writes HERE
+  index.html                     # art-directed web page, front matter on top (see below)
+  assets/css/style.css           # ALL page CSS lives here — see the no-inline-CSS rule
   assets/images/*.jpg            # official images, named by content (hero, gommage, parry…)
-  assets/fonts/*.woff2           # local font files (or data URIs inside the page)
-review-site/src/reviews/<slug>/  # anchor session moves the draft here on integration
+  assets/fonts/*.woff2           # local font files
+  instagram/                     # social version, inside the same series directory
+    build.py                     # generates slides + exports PNGs (single source of truth)
+    slides/*.html                # generated, one file per slide
+    export/*.png                 # final 1080x1350 deliverables
+    caption.txt                  # ready-to-paste post caption + hashtags
+    assets/                      # own copy of images/fonts (no ../ up into the web page's)
+review-site/src/reviews/<slug>/  # anchor session moves index.html + assets/ here on
+                                 # integration; instagram/ stays in the series directory
 ```
 
+- **HTML and CSS are separate files — never blend them.** The page links
+  `assets/css/style.css` (post-integration path `/reviews/<slug>/assets/css/style.css`);
+  no `<style>` blocks in `index.html` beyond nothing, no inline `style=""` attributes
+  except trivial one-offs. `@font-face` (data URIs allowed) lives in the CSS file. Same
+  discipline for slide HTML in `instagram/`.
 - The page must carry the **front-matter block** from `.claude/CLAUDE.md` (title, date,
   medium, score, excerpt, cover, plus `layout: false` and `templateEngineOverride: false`).
 - All asset references use the post-integration absolute paths
-  (`/reviews/<slug>/assets/images/…`) so integration is a pure move.
-- No `../` escapes out of the article folder; the folder must be self-contained.
+  (`/reviews/<slug>/assets/…`) so integration is a pure move.
+- No `../` escapes out of the article folder; deliverables stay self-contained
+  (`instagram/` keeps its own asset copies).
 - A separate `source.html`/`index.html` split is no longer needed — Eleventy ships the
   folder as-is, so `index.html` **is** the editable source. Inlining assets as data URIs is
   only for an optional Artifact copy (§6).
-
-**Instagram version** stays a separate project at the StudioProjects root (it is not site
-content and does not belong in the review-site repo):
-
-```
-<slug>-instagram/           # social version
-  build.py                  # generates slides + exports PNGs (single source of truth)
-  slides/*.html             # generated, one file per slide
-  export/*.png              # final 1080x1350 deliverables
-  caption.txt               # ready-to-paste post caption + hashtags
-  assets/                   # own copy of images/fonts (no ../ into the other project)
-```
 
 ## 2. Review text is sacred
 
@@ -91,8 +94,8 @@ content and does not belong in the review-site repo):
 - At handoff, list every placeholder and what it's waiting for (a short `PLACEHOLDERS.md`
   in the project root, or a list in the final message), plus the rebuild command.
 - Same rule applies to carousel slides: a placeholder file in
-  `<game>-instagram/assets/images/`, referenced from `build.py`; overwrite + rerun
-  `python3 build.py` regenerates the PNGs.
+  `instagram/assets/images/` (inside the series directory), referenced from `build.py`;
+  overwrite + rerun `python3 build.py` regenerates the PNGs.
 
 ## 4. Design identity — derived from the game
 
@@ -119,6 +122,13 @@ content and does not belong in the review-site repo):
   `Developer / Publisher: … ◆ Platform(s): … ◆ Release year: … ◆ Hours played: …`.
 - **No image captions**, **no full-bleed "interlude" images**, **no footer page** — the user
   removed all three. End the page on the verdict with generous bottom padding on `<main>`.
+- **Typography — romanized Japanese**: every Japanese term written in Latin script is
+  *italic* — genre/jargon terms
+  (*nakige*, *moege*, *seiyuu*), studio or in-world terms. Applies to web page, carousel
+  slides, and captions. Proper nouns used as plain English brand names stay roman.
+- **"Final Verdict" gets a clear divider**: a full-width horizontal rule in the page's
+  identity (e.g. gilt hairline, or the game's motif centered on a rule) separating it from
+  the preceding section — the verdict must read as its own closing act, not a continuation.
 - Verdict: a single gilt-bordered panel — big rating (e.g. "3 / 5" in the display face) with
   filled/hollow ◆ diamonds on the left, verdict text on the right, hairline divider between;
   stacks rating-first on mobile. Keep the rating stack tight: small grid gap (~2px),
@@ -133,10 +143,12 @@ content and does not belong in the review-site repo):
 
 - Edit `index.html` in the article folder directly (full doctype document; Eleventy passes
   it through byte-for-byte thanks to `layout: false` + `templateEngineOverride: false`).
-- **Publishing = integration into the site** (anchor session): move the folder from
-  `drafts/` to `src/reviews/<slug>/`, run the dev server (`npm run dev`, port 4173 — the
-  `review-site` entry in `StudioProjects/.claude/launch.json`), verify the article page AND
-  its card/hero on the homepage and `/reviews/` archive, then commit. Site deploys are just
+- **Publishing = integration into the site** (anchor session): copy `index.html` +
+  `assets/` from the series directory to `src/reviews/<slug>/` (`instagram/` stays in the
+  series directory — it is not site content), run the dev server (`npm run dev`, port
+  4173 — the `review-site` entry in `StudioProjects/.claude/launch.json`), verify the
+  article page AND its card/hero on the homepage and `/reviews/` archive. **Never commit
+  or push — the user commits manually after reviewing.** Site deploys are just
   `npm run build` → `_site/`.
 - Verify before declaring done: screenshot desktop (~1280) and mobile (375); check console
   for errors.
@@ -211,6 +223,11 @@ Everything above applies; adjust only these:
   Omit a row only when it's genuinely N/A (e.g. no aliases). `Hours played` (the user's
   own count) may be added as a final row when they provide it — never in place of
   `Playtime`.
+- **Package artwork in the hero**: include the VN's package/cover artwork (from its vndb
+  entry) somewhere in the hero section as a clean framed image — **no text overlapping or
+  overlaid on it**, no caption. Typical placement: beside the stat block, or as a floating
+  plate over the key-art backdrop; keep title/kicker text on the backdrop, never on the
+  package art itself. Save it as `assets/images/package.jpg`.
 - **Primary metadata source: [vndb.org](https://vndb.org)** — browse it first when
   starting any VN review. It is the authority for the stat block above (original/romanized
   titles, aliases, staff/developer, release dates, length category, language releases, age
