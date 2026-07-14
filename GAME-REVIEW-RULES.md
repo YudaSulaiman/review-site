@@ -44,8 +44,13 @@ review-site/src/reviews/<slug>/  # anchor session moves index.html + assets/ her
   no `<style>` blocks in `index.html` beyond nothing, no inline `style=""` attributes
   except trivial one-offs. `@font-face` (data URIs allowed) lives in the CSS file. Same
   discipline for slide HTML in `instagram/`.
-- The page must carry the **front-matter block** from `.claude/CLAUDE.md` (title, date,
-  medium, score, excerpt, cover, plus `layout: false` and `templateEngineOverride: false`).
+- Metadata lives in a **sidecar data file** `index.11tydata.json` next to the page — the
+  same fields as the front-matter schema in `.claude/CLAUDE.md` (title, subtitle, date,
+  medium, score, excerpt, cover, coverAlt, heroImage, featured) plus `"layout": false`.
+  Do NOT put YAML front matter inside the HTML: the raw `---` block renders as visible
+  text noise whenever the file is opened outside Eleventy. Because
+  `templateEngineOverride` cannot be set from a data file, the HTML/CSS must contain no
+  `{{` or `{%` sequences — grep for them before integrating.
 - All asset references use the post-integration absolute paths
   (`/reviews/<slug>/assets/…`) so integration is a pure move.
 - No `../` escapes out of the article folder; deliverables stay self-contained
