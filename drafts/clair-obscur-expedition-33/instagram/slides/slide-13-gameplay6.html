@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('../assets/fonts/playfair-normal.woff2') format('woff2');
+      font-weight: 400 800;
+      font-style: normal
+    }
+
+    @font-face {
+      font-family: 'Playfair Display';
+      src: url('../assets/fonts/playfair-italic.woff2') format('woff2');
+      font-weight: 400 800;
+      font-style: italic
+    }
+
+    :root {
+      --ink: #0f0d11;
+      --panel: #191521;
+      --ivory: #eae2d3;
+      --body: #b9ae9c;
+      --gilt: #c4a165;
+      --gilt-dim: rgba(196, 161, 101, .32);
+      --gilt-hair: rgba(196, 161, 101, .18);
+      --display: 'Playfair Display', Didot, Georgia, serif;
+      --serif: Charter, 'Iowan Old Style', Georgia, serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      width: 1080px;
+      height: 1350px;
+      overflow: hidden
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--body);
+      font-family: var(--serif);
+      position: relative
+    }
+
+    .plate {
+      position: absolute;
+      inset: 36px;
+      border: 1px solid var(--gilt-dim);
+      pointer-events: none;
+      z-index: 5
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 104px 100px;
+      display: flex;
+      flex-direction: column
+    }
+
+    /* content slide header */
+    .head {
+      display: flex;
+      align-items: baseline;
+      gap: 30px;
+      margin-bottom: 30px
+    }
+
+    .numeral {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 112px;
+      line-height: .8;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--gilt-dim);
+      flex: 0 0 auto
+    }
+
+    .acte-label {
+      font-size: 27px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gilt)
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--gilt-hair);
+      position: relative;
+      margin-bottom: 40px
+    }
+
+    .rule::after {
+      content: "◆";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      translate: 0 -50%;
+      color: var(--gilt);
+      font-size: 11px;
+      background: var(--ink);
+      padding-right: 14px
+    }
+
+    .frame {
+      border: 1px solid var(--gilt-dim);
+      padding: 10px;
+      margin-bottom: 52px;
+      background: linear-gradient(160deg, rgba(196, 161, 101, .05), rgba(196, 161, 101, 0) 45%)
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: 430px;
+      object-fit: cover
+    }
+
+    .copy {
+      font-size: 29px;
+      line-height: 1.66;
+      color: var(--body);
+      max-width: 880px
+    }
+
+    .copy+.copy {
+      margin-top: 24px
+    }
+
+    .copy strong {
+      color: var(--ivory);
+      font-weight: 600
+    }
+
+    .copy em {
+      font-family: var(--display);
+      font-style: italic;
+      color: var(--gilt)
+    }
+
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--gilt-hair);
+      padding-top: 26px;
+      margin-top: auto
+    }
+
+    .foot .name {
+      font-size: 19px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gilt)
+    }
+
+    .index {
+      font-family: var(--display);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--body)
+    }
+
+    .index b {
+      color: var(--gilt);
+      font-weight: 600
+    }
+
+    /* cover */
+    .cover-bg {
+      position: absolute;
+      inset: 0;
+      background: url('../assets/images/hero.jpg') center 30%/cover
+    }
+
+    .cover-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 13, 17, .5), rgba(15, 13, 17, .05) 32%, rgba(15, 13, 17, .15) 55%, rgba(15, 13, 17, .92) 84%, var(--ink))
+    }
+
+    .cover .slide {
+      justify-content: flex-end;
+      padding-bottom: 120px
+    }
+
+    .kicker {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 23px;
+      font-weight: 700;
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      color: #eeddb2;
+      margin-bottom: 34px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, .95), 0 2px 18px rgba(0, 0, 0, .9)
+    }
+
+    .kicker::before {
+      content: "";
+      width: 60px;
+      height: 1px;
+      background: rgba(238, 221, 178, .6);
+      flex: 0 0 auto
+    }
+
+    h1 {
+      font-family: var(--display);
+      font-weight: 600;
+      color: var(--ivory);
+      font-size: 104px;
+      line-height: 1.03;
+      text-shadow: 0 2px 30px rgba(15, 13, 17, .85)
+    }
+
+    h1 .num {
+      color: var(--gilt);
+      font-style: italic;
+      font-weight: 500
+    }
+
+    .cover-meta {
+      display: flex;
+      margin-top: 56px;
+      border-top: 1px solid var(--gilt-hair);
+      padding-top: 30px;
+      font-size: 21px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(234, 226, 211, .92)
+    }
+
+    .cover-meta span+span::before {
+      content: "◆";
+      font-size: 10px;
+      vertical-align: 4px;
+      color: var(--gilt);
+      margin: 0 22px
+    }
+
+    /* verdict */
+    .verdict .slide {
+      align-items: center;
+      text-align: center
+    }
+
+    .rating-label {
+      font-size: 23px;
+      letter-spacing: .34em;
+      text-transform: uppercase;
+      color: var(--gilt);
+      margin: auto 0 0
+    }
+
+    .score {
+      font-family: var(--display);
+      line-height: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      justify-content: center
+    }
+
+    .score .big {
+      font-weight: 700;
+      color: var(--ivory);
+      font-size: 300px
+    }
+
+    .score .of {
+      font-style: italic;
+      font-weight: 500;
+      color: var(--gilt);
+      font-size: 88px
+    }
+
+    .diamonds {
+      font-size: 32px;
+      letter-spacing: 32px;
+      margin: 30px 0 0 32px;
+      color: var(--gilt)
+    }
+
+    .diamonds .off {
+      color: var(--gilt-dim)
+    }
+
+    .verdict .copy {
+      text-align: center;
+      margin: 64px 0 auto;
+      font-size: 30px;
+      max-width: 830px
+    }
+
+    .verdict .foot {
+      width: 100%;
+      margin-top: 0
+    }
+  </style>
+</head>
+
+<body class="">
+  <div class="plate"></div>
+  <div class="slide">
+    <div class="head">
+      <span class="numeral">13</span>
+      <p class="acte-label">Gameplay Perspective · VI</p>
+    </div>
+    <div class="rule"></div>
+    <div class="frame"><img src="../assets/images/turnbased.jpg" alt=""></div>
+    <p class="copy">The gun mechanic, or <strong>"Free Aim"</strong> on the other hand, is creative and
+      balanced enough. It doesn't end the character's turn which gives the player more <strong>versatility</strong> to execute a
+      strategy. A single bullet costs <strong>one AP (Action Point)</strong>, meaning it drains your capacity to use certain skills. Some enemies also
+      have <strong>weak points</strong> you can shoot for a huge chunk of damage, and <strong>destructible objects</strong> you can break through
+      shooting.</p>
+    <div class="foot"><span class="name">Clair Obscur : Expedition 33 — Review</span><span class="index"><b>13</b> /
+        14</span></div>
+  </div>
+</body>
+
+</html>
