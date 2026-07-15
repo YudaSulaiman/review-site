@@ -209,7 +209,7 @@
       position: absolute;
       inset: 0;
       z-index: -2;
-      background-image: url(/reviews/clair-obscur-expedition-33/assets/images/hero.jpg);
+      background-image: url(../images/hero.jpg);
       background-size: cover;
       background-position: center 30%;
     }

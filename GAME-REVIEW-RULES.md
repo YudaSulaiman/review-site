@@ -51,8 +51,13 @@ review-site/src/reviews/<slug>/  # anchor session moves index.html + assets/ her
   text noise whenever the file is opened outside Eleventy. Because
   `templateEngineOverride` cannot be set from a data file, the HTML/CSS must contain no
   `{{` or `{%` sequences — grep for them before integrating.
-- All asset references use the post-integration absolute paths
-  (`/reviews/<slug>/assets/…`) so integration is a pure move.
+- All asset references inside the page are **relative**: `assets/images/foo.jpg` in the
+  HTML, `../images/foo.jpg` in the CSS (CSS URLs resolve from the CSS file's location).
+  Relative paths work identically in `drafts/`, on the built site, and when the file is
+  opened directly in a browser — never use site-absolute `/reviews/<slug>/…` paths inside
+  the page or stylesheet. The one exception: the sidecar `index.11tydata.json` keeps
+  site-absolute paths for `cover`/`heroImage`, because other templates (homepage, archive)
+  consume those from their own URLs.
 - No `../` escapes out of the article folder; deliverables stay self-contained
   (`instagram/` keeps its own asset copies).
 - A separate `source.html`/`index.html` split is no longer needed — Eleventy ships the
